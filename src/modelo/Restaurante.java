@@ -11,17 +11,21 @@ import java.util.Map;
 
 
 public class Restaurante {
+	
+	private static File archivoMenu=new File("./data/menu.txt");
+	private static File archivoCombos=new File("./data/combos.txt");
+	private static ArrayList<Ingrediente> ingredientes=new ArrayList<Ingrediente>();
 	public Restaurante() {
-		 menuBase= new HashMap<>();
-		 combos=new HashMap<>();
-		 ingredientes=new HashMap<>();
+		 try {
+			 File archivoIngredientes=new File("./data/ingredientes.txt");
+			 cargarIngredientes(archivoIngredientes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
-	public Map<String,Pedido> pedidos;
 	public Pedido pedidoEnCurso;
-	public Map<String,Combo> combos;
-	public Map<String,ProductoMenu> menuBase;
-	public Map<String,Ingrediente> ingredientes;
 	public void iniciarPedido(String nombreCliente,String direccionCliente) {
 		
 	}
@@ -37,7 +41,8 @@ public class Restaurante {
 		
 	}
 	public ArrayList<Ingrediente>getIngredientes(){
-		return null;
+	
+		return this.ingredientes;
 		
 	}
 	public void cargarInformacionRestaurante(File archivoIngredientes,File archivoMenu, File archivoCombos) throws IOException {
@@ -46,32 +51,38 @@ public class Restaurante {
 		cargarMenu(archivoMenu);
 	}
 	private void cargarIngredientes(File archivoIngredientes) throws IOException{
-		Map<String, Ingrediente> ingredientes = new HashMap<>();
-	
-		BufferedReader br = new BufferedReader(new FileReader(archivoIngredientes));
-		String linea = br.readLine();
-		while (linea != null) 
-		{
-			String[] partes = linea.split(",");
-			String nombre = partes[0];
-			int costoAdicional = Integer.parseInt(partes[1]);
-			
-			Ingrediente elIngrediente = ingredientes.get(nombre);
-			if (elIngrediente == null)
-			{
-				elIngrediente = new Ingrediente(nombre,costoAdicional);
-				ingredientes.put(nombre, elIngrediente);
+		try {
+			FileReader fr=new FileReader(archivoIngredientes);
+			BufferedReader br=new BufferedReader(fr);
+			String linea;
+			while ((linea=br.readLine())!=null) {
+				String[] lista=linea.split(";");
+				Ingrediente ingrediente=new Ingrediente(lista[0],Integer.parseInt(lista[1]));
+				ingredientes.add(ingrediente);
 			}
-			
-
-		br.close();
 		}
+		catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
+	
 	
 	private void cargarMenu(File archivoMenu) {
 		
 	}
 	private void cargarCombos(File archivoCombos) {
-		
+		try {
+			FileReader fr=new FileReader(archivoCombos);
+			BufferedReader br=new BufferedReader(fr);
+			String linea;
+			while ((linea=br.readLine())!=null) {
+				String[] lista=linea.split(";");
+				Combo combo=new Combo(lista[0],Integer.parseInt(lista[1]),);
+				ingredientes.add(ingrediente);
+			}
+		}
+		catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 }
