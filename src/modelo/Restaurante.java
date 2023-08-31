@@ -2,32 +2,32 @@ package modelo;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import modelo.ProductoMenu;
 
 
 public class Restaurante {
 	
-	private static File archivoMenu=new File("./data/menu.txt");
-	private static File archivoCombos=new File("./data/combos.txt");
+
 	private static ArrayList<Ingrediente> ingredientes=new ArrayList<Ingrediente>();
+	private static ArrayList<Combo> combos=new ArrayList<Combo>();
+	private static ArrayList<ProductoMenu> menuBase=new ArrayList<ProductoMenu>();
+	private ArrayList<Pedido> pedidos=new ArrayList<Pedido>();
+	private Pedido pedidoEnCurso;
 	public Restaurante() {
-		 try {
 			 File archivoIngredientes=new File("./data/ingredientes.txt");
-			 cargarIngredientes(archivoIngredientes);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			 File archivoMenu=new File("./data/menu.txt");
+			 File archivoCombos=new File("./data/combos.txt");
+			 cargarInformacionRestaurante(archivoIngredientes,archivoMenu,archivoCombos);
+			 
 		
 	}
-	public Pedido pedidoEnCurso;
+
 	public void iniciarPedido(String nombreCliente,String direccionCliente) {
-		
+		this.pedidoEnCurso=new Pedido(nombreCliente,direccionCliente);
 	}
 	public void cerrarYGuardarPedido() {
 		
@@ -45,13 +45,36 @@ public class Restaurante {
 		return this.ingredientes;
 		
 	}
-	public void cargarInformacionRestaurante(File archivoIngredientes,File archivoMenu, File archivoCombos) throws IOException {
-		cargarIngredientes(archivoIngredientes);
-		cargarCombos(archivoCombos);
-		cargarMenu(archivoMenu);
+	public ArrayList<Combo>getCombos(){
+		
+		return this.combos;
+	}
+public ArrayList<ProductoMenu>getMenu(){
+		
+		return this.menuBase;
+	}
+	public void cargarInformacionRestaurante(File archivoIngredientes,File archivoMenu, File archivoCombos) {
+		try {
+			cargarIngredientes(archivoIngredientes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			cargarMenu(archivoMenu);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			cargarCombos(archivoCombos);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	private void cargarIngredientes(File archivoIngredientes) throws IOException{
-		try {
+
 			FileReader fr=new FileReader(archivoIngredientes);
 			BufferedReader br=new BufferedReader(fr);
 			String linea;
@@ -60,29 +83,45 @@ public class Restaurante {
 				Ingrediente ingrediente=new Ingrediente(lista[0],Integer.parseInt(lista[1]));
 				ingredientes.add(ingrediente);
 			}
-		}
-		catch (IOException e) {
-            e.printStackTrace();
-        }
+			br.close();
 	}
 	
 	
-	private void cargarMenu(File archivoMenu) {
-		
+	private void cargarMenu(File archivoMenu) throws IOException {
+			FileReader fr=new FileReader(archivoMenu);
+			BufferedReader br=new BufferedReader(fr);
+			String linea;
+			while ((linea=br.readLine())!=null) {
+				String[] lista=linea.split(";");
+				ProductoMenu productomenu=new ProductoMenu(lista[0],Integer.parseInt(lista[1]));
+				menuBase.add(productomenu);
+			}
+			br.close();
 	}
-	private void cargarCombos(File archivoCombos) {
-		try {
+	
+	private void cargarCombos(File archivoCombos) throws IOException {
 			FileReader fr=new FileReader(archivoCombos);
 			BufferedReader br=new BufferedReader(fr);
 			String linea;
 			while ((linea=br.readLine())!=null) {
 				String[] lista=linea.split(";");
-				Combo combo=new Combo(lista[0],Integer.parseInt(lista[1]),);
-				ingredientes.add(ingrediente);
+				String porcentaje=lista[1].replace("%","");
+				double descuento=Integer.parseInt(porcentaje);
+				
+				Combo combo=new Combo(lista[0],descuento);
+				for (int i =2;i<=4;i++) {
+					String producto=lista[i];
+					for (ProductoMenu objetoProducto :menuBase) {
+						if (objetoProducto.getNombre().equals(producto)){
+							combo.agregarItemACombo(objetoProducto);
+						}
+					}
+						
+				}
+
+				combos.add(combo);
 			}
+			br.close();
 		}
-		catch (IOException e) {
-            e.printStackTrace();
-        }
 	}
-}
+

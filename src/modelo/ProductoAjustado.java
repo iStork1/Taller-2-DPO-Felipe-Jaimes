@@ -3,9 +3,9 @@ package modelo;
 import java.util.ArrayList;
 
 public class ProductoAjustado implements Producto {
-	public ArrayList<Ingrediente> agregados;
-	public ArrayList<Ingrediente> eliminados;
-	
+	private ArrayList<Ingrediente> agregados;
+	private ArrayList<Ingrediente> eliminados;
+	private ProductoMenu Base;
 	public ProductoAjustado(ProductoMenu base) {
 		
 	}

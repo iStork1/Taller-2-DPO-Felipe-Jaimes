@@ -11,7 +11,7 @@ public class Pedido {
 	public Pedido (String nombreCliente ,String direccionCliente) {
 
 	}
-	public ArrayList<Producto> itemsPedido;
+	private ArrayList<Producto> itemsPedido;
 	public int getIdPedido() {
 		return 0;
 		
