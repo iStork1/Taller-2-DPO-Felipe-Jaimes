@@ -17,6 +17,7 @@ public class Restaurante {
 	private static ArrayList<ProductoMenu> menuBase=new ArrayList<ProductoMenu>();
 	private ArrayList<Pedido> pedidos=new ArrayList<Pedido>();
 	private Pedido pedidoEnCurso;
+	private int contadorid=0;
 	public Restaurante() {
 			 File archivoIngredientes=new File("./data/ingredientes.txt");
 			 File archivoMenu=new File("./data/menu.txt");
@@ -33,7 +34,7 @@ public class Restaurante {
 		
 	}
 	public Pedido getPedidoEnCurso() {
-		return null;
+		return this.pedidoEnCurso;
 		
 	}
 	public ArrayList<Producto> getMenuBase(){
@@ -93,8 +94,9 @@ public ArrayList<ProductoMenu>getMenu(){
 			String linea;
 			while ((linea=br.readLine())!=null) {
 				String[] lista=linea.split(";");
-				ProductoMenu productomenu=new ProductoMenu(lista[0],Integer.parseInt(lista[1]));
+				ProductoMenu productomenu=new ProductoMenu(contadorid,lista[0],Integer.parseInt(lista[1]));
 				menuBase.add(productomenu);
+				this.contadorid+=1;
 			}
 			br.close();
 	}
@@ -108,13 +110,15 @@ public ArrayList<ProductoMenu>getMenu(){
 				String porcentaje=lista[1].replace("%","");
 				double descuento=Integer.parseInt(porcentaje);
 				
-				Combo combo=new Combo(lista[0],descuento);
+				Combo combo=new Combo(contadorid,lista[0],descuento);
+				contadorid+=1;
 				for (int i =2;i<=4;i++) {
 					String producto=lista[i];
 					for (ProductoMenu objetoProducto :menuBase) {
 						if (objetoProducto.getNombre().equals(producto)){
 							combo.agregarItemACombo(objetoProducto);
 						}
+						
 					}
 						
 				}
