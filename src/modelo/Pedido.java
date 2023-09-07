@@ -28,22 +28,36 @@ public class Pedido {
 		this.itemsPedido.add(nuevoItem);
 	}
 	private int getPrecioNetoPedido() {
-		return 0;
+		int precioNeto=0;
+		for (Producto items : itemsPedido) {
+			precioNeto+=items.getPrecio();
+		}
+		return precioNeto;
 	}
 	private int getPrecioTotalPedido() {
-		return 0;
+		return getPrecioNetoPedido()+getPrecioIVAPedido();
 		
 	}
 	private int getPrecioIVAPedido() {
-		return 0;
+		int IVA=19+(1/100);
+		int precioIVA=getPrecioNetoPedido()*IVA;
+		return precioIVA;
 		
 	}
 	private String generarTextoFactura() {
-		return null;
-		
+		StringBuilder textoFactura =new StringBuilder("Factura numero: "+this.numeroPedidos);
+		for (Producto items : itemsPedido) {
+			textoFactura.append("/n"+items.generarTextoFactura());
+		}
+		textoFactura.append("/nPrecioNeto: "+getPrecioNetoPedido()+"/nPrecio con IVA: "+getPrecioIVAPedido()+"/nPrecioTotal: "+getPrecioTotalPedido());
+		return textoFactura.toString();
 	}
+	public void setnumeroPedidos(int numeroPedidos) {
+		this.numeroPedidos=numeroPedidos;
+	}
+	
 	public void guardarFactura(File archivo) {
-		
+
 	}
 		
 }

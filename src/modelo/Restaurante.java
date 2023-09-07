@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+
 import modelo.ProductoMenu;
 
 
@@ -31,7 +34,21 @@ public class Restaurante {
 		this.pedidoEnCurso=new Pedido(nombreCliente,direccionCliente);
 	}
 	public void cerrarYGuardarPedido() {
-		
+		System.out.println("Cerrando y guardando pedido.....");
+		pedidos.add(pedidoEnCurso);
+		pedidoEnCurso.guardarFactura(null);
+//		System.out.println("Creando Factura.....");
+//		String directorio = "./facturas/";
+//		try {
+//		Random random = new Random();
+//		int numeroAleatorio = random.nextInt(90000) + 10000;
+//		String nombreArchivo = directorio + "archivo_" + numeroAleatorio + ".txt";
+//		File archivo = new File(nombreArchivo);
+//        FileWriter fw = new FileWriter(archivo);
+//        fw.close();
+//		} catch (IOException e) {
+//        e.printStackTrace();
+//		}
 	}
 	public Pedido getPedidoEnCurso() {
 		return this.pedidoEnCurso;

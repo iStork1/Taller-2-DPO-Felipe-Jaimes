@@ -57,7 +57,7 @@ public class Aplicacion {
 	}
 	public static void ejecutarOpcion() {
 		Pedido pedido=new Pedido("asd","asd");
-		
+		int numeroPedidos=0;
 		boolean continuar = true;
 		while (continuar)
 		{
@@ -209,24 +209,9 @@ public class Aplicacion {
 			}	
 			
 			else if (Integer.parseInt(eleccion)==4) {
-				System.out.println("Cerrando pedido y guardando factura.....");
-				String directorio = "./facturas/";
-				try {
-				Random random = new Random();
-				int numeroAleatorio = random.nextInt(90000) + 10000;
-				String nombreArchivo = directorio + "archivo_" + numeroAleatorio + ".txt";
-				File archivo = new File(nombreArchivo);
-	            FileWriter fw = new FileWriter(archivo);
-	            fw.write(restaurante.getPedidoEnCurso().getIdPedido());
-//	            BufferedWriter bw = new BufferedWriter(fw);
-//	            PrintWriter escritor = new PrintWriter(bw);
-//	            escritor.close();
-//	            bw.close();
-	            fw.close();
-				} catch (IOException e) {
-	            e.printStackTrace();
-				}
-				
+				numeroPedidos+=1;
+				restaurante.getPedidoEnCurso().setnumeroPedidos(numeroPedidos);
+				restaurante.cerrarYGuardarPedido();
 			}
 			else if (Integer.parseInt(eleccion)==5) {
 				mostrarMenu();

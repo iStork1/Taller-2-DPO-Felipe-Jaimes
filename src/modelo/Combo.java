@@ -34,7 +34,13 @@ public class Combo implements Producto{
 		
 	}
 	public String generarTextoFactura() {
-		return null;
+		StringBuilder factura = new StringBuilder("El combo "+this.nombreCombo+" tiene los siguientes productos: ");
+		for (ProductoMenu items : itemsCombo) {
+			factura.append('\n'+items.getNombre()+" $"+items.getPrecio());
+		}
+		factura.append("\nCon un descuento total de: "+this.descuento);
+		factura.append("\nPrecio total combo: "+getPrecio());
+		return factura.toString();
 	}
 	public String getNombre() {
 		return nombreCombo;

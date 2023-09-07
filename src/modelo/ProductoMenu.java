@@ -21,7 +21,8 @@ public class ProductoMenu implements Producto{
 		
 	}
 	public String generarTextoFactura() {
-		return  getNombre() + " - Precio: " + getPrecio();
+		StringBuilder factura = new StringBuilder("El Producto: "+getNombre() + " - Precio: " + getPrecio());
+		return factura.toString();
 		
 	}
 	public ProductoMenu getBase() {
