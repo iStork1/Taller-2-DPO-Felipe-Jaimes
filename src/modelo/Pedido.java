@@ -1,6 +1,9 @@
 package modelo;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Pedido {
@@ -39,25 +42,34 @@ public class Pedido {
 		
 	}
 	private int getPrecioIVAPedido() {
-		int IVA=19+(1/100);
+		int IVA=19*(1/100);
 		int precioIVA=getPrecioNetoPedido()*IVA;
 		return precioIVA;
 		
 	}
 	private String generarTextoFactura() {
 		StringBuilder textoFactura =new StringBuilder("Factura numero: "+this.numeroPedidos);
+		textoFactura.append("\nNombreCliente: "+this.nombreCliente);
+		textoFactura.append("\nDirecciónCliente: "+this.direccionCliente);
 		for (Producto items : itemsPedido) {
-			textoFactura.append("/n"+items.generarTextoFactura());
+			textoFactura.append("\n"+items.generarTextoFactura());
 		}
-		textoFactura.append("/nPrecioNeto: "+getPrecioNetoPedido()+"/nPrecio con IVA: "+getPrecioIVAPedido()+"/nPrecioTotal: "+getPrecioTotalPedido());
+		textoFactura.append("\n"+"\n"+"PrecioNeto: "+getPrecioNetoPedido()+"\n"+"Precio con IVA: "+getPrecioIVAPedido()+"\n"+"PrecioTotal: "+getPrecioTotalPedido());
 		return textoFactura.toString();
 	}
 	public void setnumeroPedidos(int numeroPedidos) {
 		this.numeroPedidos=numeroPedidos;
 	}
+	public int getnumeroPedidos() {
+		return this.numeroPedidos;
+	}
 	
-	public void guardarFactura(File archivo) {
-
+	public void guardarFactura(File archivo) throws IOException {
+		String textofactura=generarTextoFactura();
+		FileWriter fileWriter = new FileWriter(archivo);
+		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+		bufferedWriter.write(textofactura);
+		bufferedWriter.close();
 	}
 		
 }

@@ -47,6 +47,12 @@ public class ProductoAjustado implements Producto {
 	public void seteliminados(ArrayList<Ingrediente> eliminados){
 		this.eliminados=eliminados;
 	}
+	public ArrayList<Ingrediente> getagregados(){
+		return this.agregados;
+	}
+	public ArrayList<Ingrediente> geteliminados(){
+		return this.eliminados;
+	}
 	@Override
 	public int getid() {
 		return Base.getid();

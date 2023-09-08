@@ -159,9 +159,10 @@ public class Aplicacion {
 						agrego=true;
 						String[] listaingredientesadicionales=lector.split(",");
 						ArrayList<Ingrediente> agregados = new ArrayList<Ingrediente>();
-						for(Ingrediente ingrediente:restaurante.getIngredientes()) {
-							for (String ingredientes: listaingredientesadicionales) {
-								if (ingrediente.getNombre().equals(ingredientes)) {
+						for (String idingredientes: listaingredientesadicionales){
+							String nombreingrediente=listaIngredientes.get(idingredientes);
+							for(Ingrediente ingrediente:restaurante.getIngredientes()){
+								if (ingrediente.getNombre().equals(nombreingrediente)) {
 									agregados.add(ingrediente);
 								}
 							}
@@ -181,32 +182,38 @@ public class Aplicacion {
 						elimino=true;
 						String[] listaingredienteseliminados=lector.split(",");
 						ArrayList<Ingrediente> eliminados = new ArrayList<Ingrediente>();
-						for(Ingrediente ingrediente:restaurante.getIngredientes()) {
-							for (String ingredientes: listaingredienteseliminados) {
-								if (ingrediente.getNombre().equals(ingredientes)) {
+						for (String idingredientes: listaingredienteseliminados){
+							String nombreingrediente=listaIngredientes.get(idingredientes);
+							for(Ingrediente ingrediente:restaurante.getIngredientes()){
+								if (ingrediente.getNombre().equals(nombreingrediente)) {
 									eliminados.add(ingrediente);
+									System.out.println(ingrediente.getNombre());
 								}
 							}
-						}
-						for (ProductoMenu productos: restaurante.getMenu()) {
-							if (productos.getNombre().equals(nombreProducto)) {
-								productomodificado.seteliminados(eliminados);
+						}	
+						if (agrego==false) {
+							for (ProductoMenu productos: restaurante.getMenu()) {
+								if (productos.getNombre().equals(nombreProducto)) {
+									productomodificado=new ProductoAjustado(productos);
+									productomodificado.seteliminados(eliminados);
+								}
 							}
+						
 						}
 					}
-					if(elimino||agrego) {
-						int idProductoBase=productomodificado.getBase().getid();
-						for (Producto producto:pedido.getitemsPedido()) {
-							if(idProductoBase==producto.getid()) {
-								pedido.getitemsPedido().remove(producto);
-								pedido.getitemsPedido().add(productomodificado);
-							}
-						}
-					}
+					ArrayList<Producto> copiaItemsPedido=new ArrayList<Producto>();
+					copiaItemsPedido=pedido.getitemsPedido();
+
+					int idProductoBase=productomodificado.getBase().getid();
+					for (Producto producto:copiaItemsPedido) {
+						if(idProductoBase==producto.getid()) {
+							pedido.getitemsPedido().add(productomodificado);
+						}						
+						
+					}			
 				}
 				}
-				
-			}	
+			}
 			
 			else if (Integer.parseInt(eleccion)==4) {
 				numeroPedidos+=1;
@@ -220,11 +227,11 @@ public class Aplicacion {
 				System.out.println("Saliendo de la aplicación ...");
 				continuar = false;	
 			}
-				
+			
 		}
 		
 	}
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		restaurante=new Restaurante();
 		mostrarOpciones();
 		ejecutarOpcion();

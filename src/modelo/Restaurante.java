@@ -36,19 +36,15 @@ public class Restaurante {
 	public void cerrarYGuardarPedido() {
 		System.out.println("Cerrando y guardando pedido.....");
 		pedidos.add(pedidoEnCurso);
-		pedidoEnCurso.guardarFactura(null);
-//		System.out.println("Creando Factura.....");
-//		String directorio = "./facturas/";
-//		try {
-//		Random random = new Random();
-//		int numeroAleatorio = random.nextInt(90000) + 10000;
-//		String nombreArchivo = directorio + "archivo_" + numeroAleatorio + ".txt";
-//		File archivo = new File(nombreArchivo);
-//        FileWriter fw = new FileWriter(archivo);
-//        fw.close();
-//		} catch (IOException e) {
-//        e.printStackTrace();
-//		}
+		String carpeta="./Facturas/";
+		String nombreArchivo = carpeta + "pedido"+getPedidoEnCurso().getnumeroPedidos()+".txt";
+		File factura=new File(nombreArchivo);
+		try {
+			pedidoEnCurso.guardarFactura(factura);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public Pedido getPedidoEnCurso() {
 		return this.pedidoEnCurso;

@@ -34,11 +34,11 @@ public class Combo implements Producto{
 		
 	}
 	public String generarTextoFactura() {
-		StringBuilder factura = new StringBuilder("El combo "+this.nombreCombo+" tiene los siguientes productos: ");
+		StringBuilder factura = new StringBuilder("El "+this.nombreCombo+" tiene los siguientes productos: ");
 		for (ProductoMenu items : itemsCombo) {
 			factura.append('\n'+items.getNombre()+" $"+items.getPrecio());
 		}
-		factura.append("\nCon un descuento total de: "+this.descuento);
+		factura.append("\nCon un descuento total de: "+this.descuento+"%");
 		factura.append("\nPrecio total combo: "+getPrecio());
 		return factura.toString();
 	}
